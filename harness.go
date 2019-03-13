@@ -31,7 +31,7 @@ func Evaluate(datasetPath string, algo Predictor) (float64, error) {
 		return 0, err
 	}
 
-	trainData, trainLabels, testData, testLabels := split(true, records, 0.7)
+	trainData, trainLabels, testData, testLabels := split(false, true, records, 0.7)
 
 	algo.Fit(trainData, trainLabels)
 
@@ -52,16 +52,22 @@ func loadFile(path string) ([][]string, error) {
 	return reader.ReadAll()
 }
 
-func split(header bool, records [][]string, trainProportion float64) (mat.Matrix, []string, mat.Matrix, []string) {
+func split(random bool, header bool, records [][]string, trainProportion float64) (mat.Matrix, []string, mat.Matrix, []string) {
 	if header {
 		records = records[1:]
 	}
 
 	datasetLength := len(records)
 	indx := make([]int, int(float64(datasetLength)*trainProportion))
-	r := rnd.New(rnd.NewSource(uint64(47)))
-	sampleuv.WithoutReplacement(indx, datasetLength, r)
-	sort.Ints(indx)
+	if random {
+		r := rnd.New(rnd.NewSource(uint64(47)))
+		sampleuv.WithoutReplacement(indx, datasetLength, r)
+		sort.Ints(indx)
+	} else {
+		for i := range indx {
+			indx[i] = i
+		}
+	}
 
 	trainData := mat.NewDense(len(indx), len(records[0]), nil)
 	trainLabels := make([]string, len(indx))
@@ -73,9 +79,11 @@ func split(header bool, records [][]string, trainProportion float64) (mat.Matrix
 		if trainind < len(indx) && i == indx[trainind] {
 			// training set
 			readRecord(trainLabels, trainData, trainind, v)
+			trainind++
 		} else {
 			// test set
 			readRecord(testLabels, testData, testind, v)
+			testind++
 		}
 	}
 	return trainData, trainLabels, testData, testLabels
