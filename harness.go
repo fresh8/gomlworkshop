@@ -16,7 +16,13 @@ import (
 // Fit the model to training data and Predict classes of previously
 // unseen observations respectively.
 type Predictor interface {
+	// Fit the model to the training data.  This trains the model learning
+	// associations between each feature vector (row vector) within matrix
+	// X and it's associated ground truth class label in slice Y.
 	Fit(X mat.Matrix, Y []string)
+	// Predict will classify the feature vectors (row vectors) within
+	// matrix X, predicting the correct class for each based upon what
+	// what the model learned during training.
 	Predict(X mat.Matrix) []string
 }
 
@@ -31,7 +37,7 @@ func Evaluate(datasetPath string, algo Predictor) (float64, error) {
 		return 0, err
 	}
 
-	trainData, trainLabels, testData, testLabels := split(false, true, records, 0.7)
+	trainData, trainLabels, testData, testLabels := split(true, true, records, 0.7)
 
 	algo.Fit(trainData, trainLabels)
 
@@ -52,6 +58,8 @@ func loadFile(path string) ([][]string, error) {
 	return reader.ReadAll()
 }
 
+// Split the dataset into training and test sets for training and evaluation
+// respectively.
 func split(random bool, header bool, records [][]string, trainProportion float64) (mat.Matrix, []string, mat.Matrix, []string) {
 	if header {
 		records = records[1:]
@@ -60,10 +68,12 @@ func split(random bool, header bool, records [][]string, trainProportion float64
 	datasetLength := len(records)
 	indx := make([]int, int(float64(datasetLength)*trainProportion))
 	if random {
+		// randomly sample k indices for training set and sort
 		r := rnd.New(rnd.NewSource(uint64(47)))
 		sampleuv.WithoutReplacement(indx, datasetLength, r)
 		sort.Ints(indx)
 	} else {
+		// take the first k indices for the training set
 		for i := range indx {
 			indx[i] = i
 		}
@@ -119,10 +129,10 @@ func evaluate(predictions, labels []string) float64 {
 			}
 		}
 	}
-	accuracy := float64(tn+tp) / float64(len(labels))
-	// precision := float64(tp) / float64(tp+fp)
-	// recall := float64(tp) / float64(tp+fn)
-	// f1 := 2 * ((precision * recall) / (precision + recall))
+	//accuracy := float64(tn+tp) / float64(len(labels))
+	precision := float64(tp) / float64(tp+fp)
+	recall := float64(tp) / float64(tp+fn)
+	f1 := 2 * ((precision * recall) / (precision + recall))
 
-	return accuracy
+	return f1
 }
