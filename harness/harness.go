@@ -1,4 +1,4 @@
-package gomlworkshop
+package harness
 
 import (
 	"encoding/csv"
@@ -58,7 +58,7 @@ func loadFile(path string) ([][]string, error) {
 	return reader.ReadAll()
 }
 
-// Split the dataset into training and test sets for training and evaluation
+// split the dataset into training and test sets for training and evaluation
 // respectively.
 func split(random bool, header bool, records [][]string, trainProportion float64) (mat.Matrix, []string, mat.Matrix, []string) {
 	if header {
