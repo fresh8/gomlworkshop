@@ -14,7 +14,7 @@ go get -u github.com/fresh8/mlworkshop/harness
 
 To use the harness simply call the `Evaluate()` function passing in the path to the dataset csv file and your model:
 
-```
+``` go
 package main
 
 import (
@@ -26,9 +26,9 @@ import (
 
 func main() {
 
-	log.Println("Evaluating KNN model")
+	log.Println("Evaluating model")
 
-	model := KNNClassifier{
+	model := MyClassifier{
                 // model parameters
         }
 
@@ -41,9 +41,9 @@ func main() {
 }
 ```
 
-Where the model of type `KNNClassifier` implements the `harness.Predictor` interface:
+Where the model of type `MyClassifier` implements the `harness.Predictor` interface:
 
-```
+``` go
 // Predictor implementations define specific machine learning algorithms
 // to classify data.  The interface contains Fit and Predict methods to
 // Fit the model to training data and Predict classes of previously
