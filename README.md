@@ -1,7 +1,7 @@
 # Machine Learning Workshop
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 [![GoDoc](https://godoc.org/github.com/fresh8/mlworkshop/harness?status.svg)](https://godoc.org/github.com/fresh8/mlworkshop/harness) 
-[![Go Report Card](https://goreportcard.com/badge/github.com/james-bowman/nlp)](https://goreportcard.com/report/github.com/james-bowman/nlp)
+[![Go Report Card](https://goreportcard.com/badge/github.com/fresh8/mlworkshop/harness)](https://goreportcard.com/report/github.com/fresh8/mlworkshop/harness)
 
 Training and Evaluation harness for machine learning algorithms in Go and JavaScript.
 
