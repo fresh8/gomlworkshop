@@ -44,21 +44,4 @@ func main() {
 }
 ```
 
-Where the model of type `MyClassifier` implements the `harness.Predictor` interface:
-
-``` go
-// Predictor implementations define specific machine learning algorithms
-// to classify data.  The interface contains Fit and Predict methods to
-// Fit the model to training data and Predict classes of previously
-// unseen observations respectively.
-type Predictor interface {
-	// Fit the model to the training data.  This trains the model learning
-	// associations between each feature vector (row vector) within matrix
-	// X and it's associated ground truth class label in slice Y.
-	Fit(X mat.Matrix, Y []string)
-	// Predict will classify the feature vectors (row vectors) within
-	// matrix X, predicting the correct class for each based upon what
-	// what the model learned during training.
-	Predict(X mat.Matrix) []string
-}
-``` 
+Where the model of type `MyClassifier` implements the `harness.Predictor` interface.  Please refer to the [Godoc](https://godoc.org/github.com/fresh8/mlworkshop/harness) for more details. 
