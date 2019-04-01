@@ -58,3 +58,5 @@ console.log(result)
 ```
 
 The harness will expect your implimentation to be a class with fit and predict methods.
+
+the evaluator method will return an object of metrics, measuring how accurate your implimentation is.
