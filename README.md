@@ -32,8 +32,8 @@ func main() {
 	log.Println("Evaluating model")
 
 	model := MyClassifier{
-        // model parameters
-    }
+		// model parameters
+	}
 
 	result, err := harness.Evaluate("diabetes.csv", &model)
 	if err != nil {
