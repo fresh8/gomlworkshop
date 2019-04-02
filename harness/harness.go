@@ -139,10 +139,13 @@ func evaluate(predictions, labels []string) Metrics {
 		}
 	}
 
-	return Metrics{
+	m := Metrics{
 		Accuracy:  float64(tn+tp) / float64(len(labels)),
 		Recall:    float64(tp) / float64(tp+fn),
 		Precision: float64(tp) / float64(tp+fp),
-		F1:        2 * ((precision * recall) / (precision + recall)),
 	}
+
+	m.F1 = 2 * ((m.Precision * m.Recall) / (m.Precision + m.Recall))
+
+	return m
 }
