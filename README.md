@@ -32,15 +32,15 @@ func main() {
 	log.Println("Evaluating model")
 
 	model := MyClassifier{
-                // model parameters
-        }
+        // model parameters
+    }
 
 	result, err := harness.Evaluate("diabetes.csv", &model)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Printf("Result = %f", result)
+	log.Printf("Result = %+f", result)
 }
 ```
 
