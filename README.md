@@ -44,4 +44,19 @@ func main() {
 }
 ```
 
-Where the model of type `MyClassifier` implements the `harness.Predictor` interface.  Please refer to the [Godoc](https://godoc.org/github.com/fresh8/mlworkshop/harness) for more details. 
+Where the model of type `MyClassifier` implements the `harness.Predictor` interface.  Please refer to the [Godoc](https://godoc.org/github.com/fresh8/mlworkshop/harness) for more details.
+
+### Javascript
+
+Copy the harness.js into your project.
+
+To apply the harness:
+
+``` js
+const result = harness.evaluator('path/string/to/data', Algo)
+console.log(result)
+```
+
+The harness will expect your implimentation to be a class with fit and predict methods.
+
+the evaluator method will return an object of metrics, measuring how accurate your implimentation is.
