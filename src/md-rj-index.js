@@ -15,16 +15,32 @@ class Classifier {
       const distances = this.trainingData.map((trainRow, trainIdx) => {
         return {
           distance: calculateEuclideanDistance(testRow, trainRow),
-          index: trainIdx
+          index: trainIdx,
+          outcome: this.trainingLabels[trainIdx]
         };
       });
       distances.sort(sortDistances);
+      console.log(distances);
       const knn = distances.splice(0, this.knn);
-      return knn;
+      return getMode(knn);
     });
+    console.log("PREDICTIONS", predictions);
     return predictions;
   }
 }
+
+const getMode = (arr, result) => {
+  result = result || {};
+
+  if (arr.length === 0) return result;
+
+  let head = arr.shift().outcome;
+
+  if (result[head]) result[head]++;
+  else result[head] = 1;
+
+  return getMode(arr, result);
+};
 
 const calculateEuclideanDistance = (arr1, arr2) => {
   const sum = arr1.reduce(
