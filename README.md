@@ -40,7 +40,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("Result = %+f", result)
+	log.Printf("Result = %+v", result)
 }
 ```
 
