@@ -19,11 +19,11 @@ type Predictor interface {
 	// Fit the model to the training data.  This trains the model learning
 	// associations between each feature vector (row vector) within matrix
 	// X and it's associated ground truth class label in slice Y.
-	Fit(X mat.Matrix, Y []string)
+	Fit(X *mat.Dense, Y []string)
 	// Predict will classify the feature vectors (row vectors) within
 	// matrix X, predicting the correct class for each based upon what
 	// what the model learned during training.
-	Predict(X mat.Matrix) []string
+	Predict(X *mat.Dense) []string
 }
 
 // Evaluate takes a path to the dataset CSV file and an algorithm that
@@ -60,7 +60,7 @@ func loadFile(path string) ([][]string, error) {
 
 // split the dataset into training and test sets for training and evaluation
 // respectively.
-func split(random bool, header bool, records [][]string, trainProportion float64) (mat.Matrix, []string, mat.Matrix, []string) {
+func split(random bool, header bool, records [][]string, trainProportion float64) (*mat.Dense, []string, *mat.Dense, []string) {
 	if header {
 		records = records[1:]
 	}
