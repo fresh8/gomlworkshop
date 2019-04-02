@@ -26,15 +26,24 @@ type Predictor interface {
 	Predict(X *mat.Dense) []string
 }
 
+// Metrics represents a collection of performance metrics to evaluate a
+// machine learning classifier.
+type Metrics struct {
+	Accuracy  float64
+	Recall    float64
+	Precision float64
+	F1        float64
+}
+
 // Evaluate takes a path to the dataset CSV file and an algorithm that
-// implements the Predictor interface.  The function returns a performance
-// score measuring the skill of the algorithm at correctly predicting the
+// implements the Predictor interface.  The function returns performance
+// scores measuring the skill of the algorithm at correctly predicting the
 // class of observations or an error if one occurs.
 // This function assumes that labels are the last column in the dataset.
-func Evaluate(datasetPath string, algo Predictor) (float64, error) {
+func Evaluate(datasetPath string, algo Predictor) (Metrics, error) {
 	records, err := loadFile(datasetPath)
 	if err != nil {
-		return 0, err
+		return Metrics{}, err
 	}
 
 	trainData, trainLabels, testData, testLabels := split(true, true, records, 0.7)
@@ -111,7 +120,7 @@ func readRecord(labels []string, data mat.Mutable, recordNum int, record []strin
 	}
 }
 
-func evaluate(predictions, labels []string) float64 {
+func evaluate(predictions, labels []string) Metrics {
 	var tp, fn, fp, tn int
 
 	for i, v := range labels {
@@ -129,10 +138,11 @@ func evaluate(predictions, labels []string) float64 {
 			}
 		}
 	}
-	//accuracy := float64(tn+tp) / float64(len(labels))
-	precision := float64(tp) / float64(tp+fp)
-	recall := float64(tp) / float64(tp+fn)
-	f1 := 2 * ((precision * recall) / (precision + recall))
 
-	return f1
+	return Metrics{
+		Accuracy:  float64(tn+tp) / float64(len(labels)),
+		Recall:    float64(tp) / float64(tp+fn),
+		Precision: float64(tp) / float64(tp+fp),
+		F1:        2 * ((precision * recall) / (precision + recall)),
+	}
 }
