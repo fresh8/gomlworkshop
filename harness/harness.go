@@ -88,9 +88,9 @@ func split(random bool, header bool, records [][]string, trainProportion float64
 		}
 	}
 
-	trainData := mat.NewDense(len(indx), len(records[0]), nil)
+	trainData := mat.NewDense(len(indx), len(records[0])-1, nil)
 	trainLabels := make([]string, len(indx))
-	testData := mat.NewDense(len(records)-len(indx), len(records[0]), nil)
+	testData := mat.NewDense(len(records)-len(indx), len(records[0])-1, nil)
 	testLabels := make([]string, len(records)-len(indx))
 
 	var trainind, testind int
